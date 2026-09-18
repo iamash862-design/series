@@ -3,6 +3,6 @@ __pycache__/
 *.pyc
 .env
 .DS_Store
-payload.zip
-payload 2.zip
-
+*.zip
+payload/
+series_data.json
