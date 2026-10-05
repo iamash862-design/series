@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Safe Drives</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0A0A;
+  --white: #FAFAFA;
+  --mid: #6B6B6B;
+  --rule: #E0E0E0;
+  --lime: #C8F000;
+  --lime-dim: #1a1f00;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 56px;
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  mix-blend-mode: normal;
+}
+.logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: var(--black);
+}
+.logo sup {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--mid);
+  vertical-align: super;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--black); }
+
+/* HERO */
+.hero {
+  padding-top: 56px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg-text {
+  position: absolute;
+  top: 50%;
+  left: -2%;
+  transform: translateY(-50%);
+  font-size: clamp(160px, 26vw, 340px);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px #e0e0e0;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 0.85;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 60px 40px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+}
+.hero-left h1 {
+  font-size: clamp(48px, 8vw, 112px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  max-width: 10ch;
+}
+.hero-left h1 .accent-word {
+  color: var(--black);
+  background: var(--lime);
+  padding: 0 8px;
+  display: inline-block;
+  line-height: 1;
+}
+.hero-right {
+  text-align: right;
+  max-width: 280px;
+}
+.hero-right p {
+  font-size: 15px;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pill-btn:hover { background: #222; }
+.pill-btn.outline {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--rule);
+  margin-left: 8px;
+}
+.pill-btn.outline:hover { border-color: var(--black); }
+
+/* MARQUEE BAR */
+.marquee-bar {
+  background: var(--black);
+  color: var(--lime);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #1a1a1a;
+}
+.marquee-inner {
+  display: inline-flex;
+  gap: 0;
+  animation: marquee 28s linear infinite;
+}
+.marquee-item {
+  padding: 0 32px;
+  border-right: 1px solid #2a2a2a;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* RULES */
+.rules-section {
+  border-bottom: 1px solid var(--rule);
+}
+.rules-header {
+  padding: 64px 40px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+}
+.rules-header h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.rules-header span {
+  font-size: 13px;
+  color: var(--mid);
+}
+.rule-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  align-items: start;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 32px 40px;
+  transition: background 0.15s;
+}
+.rule-row:hover { background: #F5F5F5; }
+.rule-index {
+  font-size: 12px;
+  color: var(--mid);
+  font-weight: 400;
+  padding-top: 4px;
+}
+.rule-title {
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  padding-right: 40px;
+}
+.rule-body {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.7;
+  max-width: 52ch;
+}
+.rule-tag-inline {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-top: 10px;
+  letter-spacing: 0.02em;
+}
+.tag-r { background: #fff0f0; color: #c0392b; }
+.tag-g { background: #f0fff4; color: #1a7a3a; }
+.tag-b { background: #f0f4ff; color: #2855a0; }
+
+/* HABITS */
+.habits-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.habits-left {
+  padding: 64px 40px;
+  border-right: 1px solid var(--rule);
+}
+.habits-left h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 48px;
+}
+.habit-item {
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.habit-item:last-child { border-bottom: 1px solid var(--rule); }
+.habit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+  flex-shrink: 0;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.habit-item:hover .habit-dot { background: var(--lime); }
+.habit-text h4 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.habit-text p {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+.habits-right {
+  padding: 64px 40px;
+  background: var(--black);
+  color: var(--white);
+}
+.habits-right h3 {
+  font-size: 13px;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 32px;
+  letter-spacing: 0.02em;
+}
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #1e1e1e;
+}
+.checklist-item:last-child { border-bottom: 1px solid #1e1e1e; }
+.check-box {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--lime);
+}
+.checklist-item p {
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.5;
+}
+.checklist-item p strong { color: var(--white); font-weight: 500; }
+
+/* SIGNS */
+.signs-section {
+  border-bottom: 1px solid var(--rule);
+}
+.signs-header {
+  padding: 64px 40px 40px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.signs-header h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.signs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.sign-cell {
+  padding: 40px 32px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  transition: background 0.15s;
+  cursor: default;
+}
+.sign-cell:nth-child(4n) { border-right: none; }
+.sign-cell:hover { background: #F5F5F5; }
+.sign-shape {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.sign-cell h4 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.sign-cell p {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.5;
+  max-width: 22ch;
+}
+
+/* STAT BLOCK */
+.stat-block {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.stat-cell {
+  padding: 56px 40px;
+  border-right: 1px solid var(--rule);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--black);
+  display: block;
+}
+.stat-desc {
+  font-size: 13px;
+  color: var(--mid);
+  margin-top: 8px;
+  max-width: 24ch;
+  line-height: 1.5;
+}
+
+/* FOOTER CTA */
+.footer-cta {
+  padding: 80px 40px;
+  background: var(--black);
+  color: var(--white);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+}
+.footer-cta h2 {
+  font-size: clamp(36px, 6vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  max-width: 14ch;
+}
+.footer-cta h2 span { color: var(--lime); }
+.footer-cta-right { text-align: right; }
+.footer-cta-right p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+  max-width: 30ch;
+  margin-left: auto;
+}
+.pill-btn.lime {
+  background: var(--lime);
+  color: var(--black);
+}
+.pill-btn.lime:hover { background: #d4ff00; }
+
+/* FOOTER */
+footer {
+  background: var(--black);
+  border-top: 1px solid #1a1a1a;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #444;
+}
+footer a { color: #444; text-decoration: none; }
+footer a:hover { color: #888; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero-content { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
+  .hero-right { text-align: left; max-width: 100%; }
+  .hero-bg-text { font-size: 20vw; }
+  .rules-header, .signs-header { padding: 40px 20px 24px; flex-direction: column; gap: 8px; }
+  .rule-row { grid-template-columns: 1fr; padding: 24px 20px; gap: 8px; }
+  .rule-index { display: none; }
+  .rule-title { padding-right: 0; }
+  .habits-section { grid-template-columns: 1fr; }
+  .habits-left, .habits-right { padding: 40px 20px; }
+  .habits-left { border-right: none; border-bottom: 1px solid var(--rule); }
+  .signs-grid { grid-template-columns: repeat(2, 1fr); }
+  .sign-cell:nth-child(4n) { border-right: 1px solid var(--rule); }
+  .sign-cell:nth-child(2n) { border-right: none; }
+  .stat-block { grid-template-columns: 1fr; }
+  .stat-cell { border-right: none; border-bottom: 1px solid var(--rule); padding: 40px 20px; }
+  .footer-cta { grid-template-columns: 1fr; padding: 56px 20px; }
+  .footer-cta-right { text-align: left; }
+  .footer-cta-right p { margin-left: 0; }
+  footer { padding: 16px 20px; flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-inner { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Safe Drives<sup>™</sup></a>
+  <ul class="nav-links">
+    <li><a href="#rules">Rules</a></li>
+    <li><a href="#habits">Habits</a></li>
+    <li><a href="#signs">Signs</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-text">SAFE</div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <h1>Drive.<br><span class="accent-word">Arrive.</span><br>Repeat.</h1>
+    </div>
+    <div class="hero-right">
+      <p>Everything you need to know about staying safe on the road — rules, habits, and signs that save lives.</p>
+      <a href="#rules" class="pill-btn">View road rules</a>
+      <a href="#habits" class="pill-btn outline">Safe habits</a>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <span class="marquee-item">Wear your seat belt</span>
+    <span class="marquee-item">Keep 3 seconds distance</span>
+    <span class="marquee-item">No phone while driving</span>
+    <span class="marquee-item">Obey speed limits</span>
+    <span class="marquee-item">Yield to pedestrians</span>
+    <span class="marquee-item">Check mirrors every 5 seconds</span>
+    <span class="marquee-item">Signal before you move</span>
+    <span class="marquee-item">Never drive fatigued</span>
+    <span class="marquee-item">Wear your seat belt</span>
+    <span class="marquee-item">Keep 3 seconds distance</span>
+    <span class="marquee-item">No phone while driving</span>
+    <span class="marquee-item">Obey speed limits</span>
+    <span class="marquee-item">Yield to pedestrians</span>
+    <span class="marquee-item">Check mirrors every 5 seconds</span>
+    <span class="marquee-item">Signal before you move</span>
+    <span class="marquee-item">Never drive fatigued</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stat-block">
+  <div class="stat-cell">
+    <span class="stat-num">1.35M</span>
+    <p class="stat-desc">road deaths globally, every year</p>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-num">90%</span>
+    <p class="stat-desc">caused by human error, not road conditions</p>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-num">5 sec</span>
+    <p class="stat-desc">of distraction is enough to cause a fatal crash</p>
+  </div>
+</div>
+
+<!-- ROAD RULES -->
+<div class="rules-section" id="rules">
+  <div class="rules-header">
+    <h2>Road rules</h2>
+    <span>6 rules every driver must know</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">01</span>
+    <div class="rule-title">Speed limits exist for a reason</div>
+    <div class="rule-body">
+      Limits are set to match road conditions, not driver preference. Residential zones: 30–40 km/h. Highways: 100–120 km/h. Speeding doubles your stopping distance and triples crash severity.
+      <div><span class="rule-tag-inline tag-b">Traffic Law</span></div>
+    </div>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">02</span>
+    <div class="rule-title">Seat belts — every seat, every trip</div>
+    <div class="rule-body">
+      Wearing a seat belt cuts your risk of death in a crash by up to 60%. Every passenger — front and rear — must buckle up before the vehicle moves. There are no exceptions.
+      <div><span class="rule-tag-inline tag-r">Mandatory</span></div>
+    </div>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">03</span>
+    <div class="rule-title">Drunk driving kills</div>
+    <div class="rule-body">
+      The legal blood-alcohol limit in India is 0.03%. Alcohol slows reaction time, impairs judgement, and distorts depth perception — even at low levels. Do not drive if you have had even one drink.
+      <div><span class="rule-tag-inline tag-r">Critical</span></div>
+    </div>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">04</span>
+    <div class="rule-title">Put the phone down</div>
+    <div class="rule-body">
+      Using a handheld phone while driving multiplies crash risk by 4×. Texting, scrolling, or holding your phone is illegal. Use Bluetooth, or pull over safely before picking it up.
+      <div><span class="rule-tag-inline tag-r">Critical</span></div>
+    </div>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">05</span>
+    <div class="rule-title">Signals and right of way</div>
+    <div class="rule-body">
+      At unmarked intersections, give way to traffic from your right. Always yield to pedestrians at crossings, to emergency vehicles, and to traffic already in a roundabout. Indicate at least 3 seconds before turning.
+      <div><span class="rule-tag-inline tag-g">Safe Practice</span></div>
+    </div>
+  </div>
+  <div class="rule-row">
+    <span class="rule-index">06</span>
+    <div class="rule-title">Respect traffic signals</div>
+    <div class="rule-body">
+      Red means a complete stop behind the line. Amber means prepare to stop — not speed up. Green means proceed only when the path is clear. Running a red light is one of the top causes of fatal intersection crashes.
+      <div><span class="rule-tag-inline tag-b">Traffic Law</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HABITS -->
+<div class="habits-section" id="habits">
+  <div class="habits-left">
+    <h2>Safe habits that become second nature</h2>
+    <div class="habit-item">
+      <div class="habit-dot"></div>
+      <div class="habit-text">
+        <h4>Keep a 3-second gap</h4>
+        <p>Pick a fixed point. When the car ahead passes it, count three seconds. Pass it before you finish counting? You are too close. Double the gap in rain.</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-dot"></div>
+      <div class="habit-text">
+        <h4>Scan your mirrors every 5–8 seconds</h4>
+        <p>Left, centre, right — in rotation. Conditions change fast. Knowing what is behind you is as important as what is ahead.</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-dot"></div>
+      <div class="habit-text">
+        <h4>Signal before you move, not as you move</h4>
+        <p>Indicators warn other drivers. Signal three seconds before a lane change or turn — not mid-manoeuvre.</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-dot"></div>
+      <div class="habit-text">
+        <h4>Speed for conditions, not just limits</h4>
+        <p>A speed limit is the maximum in ideal conditions. Rain, fog, heavy traffic, and night driving all demand lower speeds.</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-dot"></div>
+      <div class="habit-text">
+        <h4>Never drive when tired</h4>
+        <p>Fatigue impairs driving as severely as alcohol. If you are drifting or missing turns, pull over. A 20-minute nap beats caffeine.</p>
+      </div>
+    </div>
+  </div>
+  <div class="habits-right">
+    <h3>Before every drive</h3>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Seat adjusted, mirrors set</strong> — before starting the engine</p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Seat belt on</strong> — every seat, every trip</p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Route checked</strong> — not mid-drive on your phone</p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Tyres and lights</strong> — quick visual before you move</p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Well-rested</strong> — 7+ hours sleep where possible</p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>No alcohol in the last 12 hours</strong></p>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <p><strong>Phone on Bluetooth or Do Not Disturb</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNS -->
+<div class="signs-section" id="signs">
+  <div class="signs-header">
+    <h2>Road signs</h2>
+    <span>Know what they mean</span>
+  </div>
+  <div class="signs-grid">
+    <!-- Stop -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <polygon points="28,2 50,10 54,32 46,50 28,54 10,50 2,32 6,10" fill="#D32F2F"/>
+        <polygon points="28,7 46,14 50,32 43,47 28,50 13,47 6,32 10,14" fill="none" stroke="#fff" stroke-width="1.5"/>
+        <text x="28" y="36" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" font-weight="700" fill="#fff">STOP</text>
+      </svg>
+      <h4>Stop</h4>
+      <p>Come to a complete halt. Yield to all traffic before proceeding.</p>
+    </div>
+    <!-- Give Way -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <polygon points="28,52 2,10 54,10" fill="none" stroke="#D32F2F" stroke-width="2.5"/>
+        <polygon points="28,46 8,14 48,14" fill="none" stroke="#D32F2F" stroke-width="1.2"/>
+        <text x="28" y="34" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="700" fill="#D32F2F">GIVE</text>
+        <text x="28" y="43" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="700" fill="#D32F2F">WAY</text>
+      </svg>
+      <h4>Give Way</h4>
+      <p>Yield to crossing and oncoming traffic at this junction.</p>
+    </div>
+    <!-- Speed Limit -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="25" fill="#fff" stroke="#D32F2F" stroke-width="3"/>
+        <text x="28" y="37" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="22" font-weight="700" fill="#0A0A0A">60</text>
+      </svg>
+      <h4>Speed Limit</h4>
+      <p>Maximum speed permitted. Reduce further in poor conditions.</p>
+    </div>
+    <!-- No Entry -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="25" fill="#D32F2F"/>
+        <rect x="10" y="23" width="36" height="10" rx="2" fill="#fff"/>
+      </svg>
+      <h4>No Entry</h4>
+      <p>Road ahead is one-way. Do not enter from this direction.</p>
+    </div>
+    <!-- Pedestrian -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <rect x="3" y="3" width="50" height="50" rx="3" fill="#F5C518"/>
+        <circle cx="28" cy="14" r="5" fill="#0A0A0A"/>
+        <path d="M28 21 L28 36" stroke="#0A0A0A" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M18 26 L28 24 L38 26" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M22 36 L24 48 M34 36 L32 48" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <h4>Pedestrian Crossing</h4>
+      <p>Slow down. Yield to pedestrians crossing or waiting.</p>
+    </div>
+    <!-- Hazard -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <polygon points="28,4 52,50 4,50" fill="#F5C518" stroke="#0A0A0A" stroke-width="2"/>
+        <text x="28" y="42" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="26" font-weight="700" fill="#0A0A0A">!</text>
+      </svg>
+      <h4>Hazard Ahead</h4>
+      <p>Potential danger ahead. Reduce speed and stay alert.</p>
+    </div>
+    <!-- No Overtaking -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="25" fill="#fff" stroke="#D32F2F" stroke-width="3"/>
+        <circle cx="22" cy="28" r="7" fill="#0A0A0A"/>
+        <circle cx="35" cy="23" r="5.5" fill="#888"/>
+        <line x1="8" y1="8" x2="48" y2="48" stroke="#D32F2F" stroke-width="3"/>
+      </svg>
+      <h4>No Overtaking</h4>
+      <p>Passing vehicles is not permitted on this road section.</p>
+    </div>
+    <!-- Hospital -->
+    <div class="sign-cell">
+      <svg class="sign-shape" viewBox="0 0 56 56" fill="none">
+        <rect x="3" y="3" width="50" height="50" rx="3" fill="#1a7a3a"/>
+        <rect x="25" y="12" width="6" height="32" rx="1" fill="#fff"/>
+        <rect x="12" y="25" width="32" height="6" rx="1" fill="#fff"/>
+      </svg>
+      <h4>Hospital</h4>
+      <p>Medical facility nearby. Reduce noise, yield to ambulances.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h2>Stay alert.<br><span>Stay alive.</span></h2>
+  <div class="footer-cta-right">
+    <p>Safe driving is respect — for your own life, and everyone else on the road.</p>
+    <a href="#rules" class="pill-btn lime">Back to rules</a>
+  </div>
+</div>
+
+<footer>
+  <span>Safe Drives — Road Safety Resource</span>
+  <div style="display:flex;gap:24px;">
+    <a href="#rules">Rules</a>
+    <a href="#habits">Habits</a>
+    <a href="#signs">Signs</a>
+  </div>
+  <span>Drive smart.</span>
+</footer>
+
+</body>
+</html>
